@@ -11,10 +11,10 @@ namespace Snake
     {
         static void Main(string[] args)
         {
-            HorizontalLine lineUp = new HorizontalLine(0, 117, 0, '+');
+            HorizontalLine lineUp = new HorizontalLine(0, 118, 0, '+');
             lineUp.Drow();
 
-            HorizontalLine lineDown = new HorizontalLine(0, 117, 28, '+');
+            HorizontalLine lineDown = new HorizontalLine(0, 118, 28, '+');
             lineDown.Drow();
             
             VerticalLine lineLeft = new VerticalLine(0, 0, 28, '+');
@@ -29,20 +29,33 @@ namespace Snake
             Snake snake = new Snake(p, 4, Direction.RIGHT);
             snake.Drow();
 
+            FoodCreator foodCreator = new FoodCreator(118, 28, '$');
+            Point food = foodCreator.CreateFood();
+            food.Draw();
+
             while(true)
             {
                 Console.CursorVisible = false;
+                if (snake.Eat(food))
+                {
+                    food = foodCreator.CreateFood();
+                    food.Draw();
+                }
+                else
+                {
+                    snake.Move();
+                }
+                Thread.Sleep(100);
                 if (Console.KeyAvailable)
                 {
                     ConsoleKeyInfo key = Console.ReadKey(true);
                     snake.HandleKey(key.Key);
                 }
-                Thread.Sleep(100);
-                snake.Move();
+                //snake.Move();
             }
 
 
-
+              
 
             //snake.Move();
             //Thread.Sleep(300);
